@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CINEMAS skills</title>
+  <script src="src/js/jquery.js"></script>
+  <script src="src/js/datatable.js"></script>
+
+  <script src="src/js/contentFunctions/tiposDeFilmes.js"></script>
+  <script src="src/js/contentFunctions/Filme.js"></script>
+
+  <script src="src/js/sweetalert.js"></script>
+  <script src="src/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="src/css/bootstrap.css">
+  <link rel="stylesheet" href="src/css/sweetalert.css">
+  <link rel="stylesheet" href="src/css/animate.css">
+  <link rel="stylesheet" href="src/css/datatable.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">cineSkills</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="cinemas.html">Skillianos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="filmes.html">Filmes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="locais.html">Locais</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="salas.html">Salas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sessoes.html">Sessoes</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container my-5">
+    <div class="card">
+      <div class="card-header">
+        <h3>Novo tipo de Filme</h3>
+      </div>
+      <div class="mx-5 my-5">
+        <form class="row g-3">
+          <!--  !!!!!!!!!!!!!!!! WATCH DATA TYPES  !!!!!!!!!!!!!!!!!!!! -->
+
+          <div class="col-md-3">
+            <label for="idTipoDeFilme" class="form-label">ID</label>
+            <input type="number" class="form-control" id="idTipoDeFilme">
+          </div>
+          <div class="col-md-3">
+            <label for="descricaoTipoDeFilme" class="form-label">Tipo</label>
+            <input type="text" class="form-control" id="descricaoTipoDeFilme">
+          </div>
+
+          <!--  !!!!!!!!!!!!!!!! WATCH DATA TYPES  !!!!!!!!!!!!!!!!!!!! -->
+
+          <div class="col-12">
+            <button type="button" class="btn btn-primary" onclick="registaTipoDeFilme()">Registar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="container" id="tableTiposDeFilmes">
+      </div>
+    </div>
+
+
+    <div class="container my-5">
+      <div class="card">
+        <div class="card-header">
+          <h3>Novo Filme</h3>
+        </div>
+        <div class="mx-5 my-5">
+          <form class="row g-3">
+            <!--  !!!!!!!!!!!!!!!! WATCH DATA TYPES  !!!!!!!!!!!!!!!!!!!! -->
+  
+            <div class="col-md-3">
+              <label for="codigoFilme" class="form-label">Codigo</label>
+              <input type="number" class="form-control" id="codigoFilme">
+            </div>
+            <div class="col-md-3">
+              <label for="nomeFilme" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="nomeFilme">
+            </div>
+            <div class="col-md-3">
+              <label for="anoFilme" class="form-label">Ano</label>
+              <input type="number" class="form-control" id="anoFilme">
+            </div>
+            <div class="col-md-3">
+              <label for="descricaoFilme" class="form-label">Descricao</label>
+              <input type="text" class="form-control" id="descricaoFilme">
+            </div>
+            <div class="col-md-6">
+              <label for="selectTipoFilme" class="form-label">Tipo de Filme</label>
+              <select class="form-select" aria-label="Default select example" id="selectTipoFilme">
+              </select>
+            </div>
+            
+  
+            <!--  !!!!!!!!!!!!!!!! WATCH DATA TYPES  !!!!!!!!!!!!!!!!!!!! -->
+  
+            <div class="col-12">
+              <button type="button" class="btn btn-primary" onclick="registaFilme()">Registar</button>
+            </div>
+          </form>
+        </div>
+  
+        <div class="container" id="tableFilme">
+        </div>
+      </div>
+
+
+
+
+
+    <!-- Modal tipo de filme -->
+    <div class="modal fade" id="editModalTiposDeFilmes" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Tipo De Filme</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <form class="row g-3">
+
+              <div class="col-md-3">
+                <label for="idTipoDeFilmeEdit" class="form-label">ID</label>
+                <input type="number" class="form-control" id="idTipoDeFilmeEdit">
+              </div>
+              <div class="col-md-3">
+                <label for="descricaoTipoDeFilmeEdit" class="form-label">Descrição</label>
+                <input type="text" class="form-control" id="descricaoTipoDeFilmeEdit">
+              </div>
+
+            </form>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btnGuardarTipoDeFilmeEdit">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Filme -->
+    <div class="modal fade" id="editModalFilme" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Filme</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <form class="row g-3">
+
+              <div class="col-md-3">
+                <label for="codigoFilmeEdit" class="form-label">Codigo</label>
+                <input type="number" class="form-control" id="codigoFilmeEdit">
+              </div>
+              <div class="col-md-3">
+                <label for="nomeFilmeEdit" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="nomeFilmeEdit">
+              </div>
+              <div class="col-md-3">
+                <label for="anoFilmeEdit" class="form-label">Ano</label>
+                <input type="number" class="form-control" id="anoFilmeEdit">
+              </div>
+              <div class="col-md-3">
+                <label for="descricaoFilmeEdit" class="form-label">Descricao</label>
+                <input type="text" class="form-control" id="descricaoFilmeEdit">
+              </div>
+              <div class="col-md-6">
+                <label for="selectTipoFilmeEdit" class="form-label">Tipo de Filme</label>
+                <select class="form-select" aria-label="Default select example" id="selectTipoFilmeEdit">
+                </select>
+              </div>
+
+            </form>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btnGuardarFilmeEdit">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+</body>
+
+
+
+
+</html>
