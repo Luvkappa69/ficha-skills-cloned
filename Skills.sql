@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Anfitrião:                    127.0.0.1
--- Versão do servidor:           10.4.32-MariaDB - mariadb.org binary distribution
--- SO do servidor:               Win64
--- HeidiSQL Versão:              12.7.0.6850
+-- Host:                         127.0.0.1
+-- Server version:               10.4.32-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win64
+-- HeidiSQL Version:             12.7.0.6850
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -15,29 +15,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- A despejar estrutura da base de dados para cineskills
+-- Dumping database structure for cineskills
 DROP DATABASE IF EXISTS `cineskills`;
 CREATE DATABASE IF NOT EXISTS `cineskills` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `cineskills`;
 
--- A despejar estrutura para tabela cineskills.cinemas
+-- Dumping structure for table cineskills.cinemas
 DROP TABLE IF EXISTS `cinemas`;
 CREATE TABLE IF NOT EXISTS `cinemas` (
   `id_cinema` int(11) NOT NULL,
   `nome_cinema` varchar(100) NOT NULL DEFAULT '',
   `local_cinema` int(11) NOT NULL,
-  `salas_cinema` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_cinema`),
   KEY `FK_cinemas_locais` (`local_cinema`),
-  KEY `FK_cinemas_salas` (`salas_cinema`),
-  CONSTRAINT `FK_cinemas_locais` FOREIGN KEY (`local_cinema`) REFERENCES `locais` (`id_locais`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_cinemas_salas` FOREIGN KEY (`salas_cinema`) REFERENCES `salas` (`codigo_salas`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_cinemas_locais` FOREIGN KEY (`local_cinema`) REFERENCES `locais` (`id_locais`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela cineskills.cinemas: ~0 rows (aproximadamente)
+-- Dumping data for table cineskills.cinemas: ~3 rows (approximately)
 DELETE FROM `cinemas`;
+INSERT INTO `cinemas` (`id_cinema`, `nome_cinema`, `local_cinema`) VALUES
+	(1, 'CinemaNos', 2),
+	(2, 'Centro Comercial', 1);
 
--- A despejar estrutura para tabela cineskills.estadodasessao
+-- Dumping structure for table cineskills.estadodasessao
 DROP TABLE IF EXISTS `estadodasessao`;
 CREATE TABLE IF NOT EXISTS `estadodasessao` (
   `id_estado_sessao` int(11) NOT NULL,
@@ -45,29 +45,32 @@ CREATE TABLE IF NOT EXISTS `estadodasessao` (
   PRIMARY KEY (`id_estado_sessao`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela cineskills.estadodasessao: ~2 rows (aproximadamente)
+-- Dumping data for table cineskills.estadodasessao: ~2 rows (approximately)
 DELETE FROM `estadodasessao`;
 INSERT INTO `estadodasessao` (`id_estado_sessao`, `descricao_estado_sessao`) VALUES
-	(1, 'ativa'),
-	(2, 'inativa');
+	(1, 'ativa/o'),
+	(2, 'inativa/o');
 
--- A despejar estrutura para tabela cineskills.filmes
+-- Dumping structure for table cineskills.filmes
 DROP TABLE IF EXISTS `filmes`;
 CREATE TABLE IF NOT EXISTS `filmes` (
   `codigo_filme` int(11) NOT NULL,
   `nome_filme` varchar(100) DEFAULT NULL,
   `ano_filme` int(11) DEFAULT NULL,
-  `deccricao_filme` varchar(100) DEFAULT NULL,
+  `decricao_filme` text DEFAULT NULL,
   `tipoDefilme_filme` int(11) DEFAULT NULL,
   PRIMARY KEY (`codigo_filme`),
   KEY `FK_filmes_tiposdefilme` (`tipoDefilme_filme`),
   CONSTRAINT `FK_filmes_tiposdefilme` FOREIGN KEY (`tipoDefilme_filme`) REFERENCES `tiposdefilme` (`id_tipo_filme`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela cineskills.filmes: ~0 rows (aproximadamente)
+-- Dumping data for table cineskills.filmes: ~3 rows (approximately)
 DELETE FROM `filmes`;
+INSERT INTO `filmes` (`codigo_filme`, `nome_filme`, `ano_filme`, `decricao_filme`, `tipoDefilme_filme`) VALUES
+	(1, 'Surfs UP', 2013, 'Pinguins Surfistas', 2),
+	(2, 'TRANSFORMERS 5', 2025, 'Robots Assassinos', 1);
 
--- A despejar estrutura para tabela cineskills.locais
+-- Dumping structure for table cineskills.locais
 DROP TABLE IF EXISTS `locais`;
 CREATE TABLE IF NOT EXISTS `locais` (
   `id_locais` int(11) NOT NULL,
@@ -75,10 +78,14 @@ CREATE TABLE IF NOT EXISTS `locais` (
   PRIMARY KEY (`id_locais`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela cineskills.locais: ~0 rows (aproximadamente)
+-- Dumping data for table cineskills.locais: ~2 rows (approximately)
 DELETE FROM `locais`;
+INSERT INTO `locais` (`id_locais`, `descricao_locais`) VALUES
+	(1, 'Évora'),
+	(2, 'lisboa'),
+	(3, 'Faro');
 
--- A despejar estrutura para tabela cineskills.salas
+-- Dumping structure for table cineskills.salas
 DROP TABLE IF EXISTS `salas`;
 CREATE TABLE IF NOT EXISTS `salas` (
   `codigo_salas` int(11) NOT NULL,
@@ -86,13 +93,16 @@ CREATE TABLE IF NOT EXISTS `salas` (
   `cinema_salas` int(11) DEFAULT NULL,
   PRIMARY KEY (`codigo_salas`),
   KEY `FK_salas_salas` (`cinema_salas`),
-  CONSTRAINT `FK_salas_salas` FOREIGN KEY (`cinema_salas`) REFERENCES `salas` (`codigo_salas`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_salas_cinemas` FOREIGN KEY (`cinema_salas`) REFERENCES `cinemas` (`id_cinema`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela cineskills.salas: ~0 rows (aproximadamente)
+-- Dumping data for table cineskills.salas: ~2 rows (approximately)
 DELETE FROM `salas`;
+INSERT INTO `salas` (`codigo_salas`, `descricao_salas`, `cinema_salas`) VALUES
+	(1, 'IMAX', 1),
+	(2, 'LowCost', 1);
 
--- A despejar estrutura para tabela cineskills.sessoes
+-- Dumping structure for table cineskills.sessoes
 DROP TABLE IF EXISTS `sessoes`;
 CREATE TABLE IF NOT EXISTS `sessoes` (
   `id_sessao` int(11) NOT NULL,
@@ -110,10 +120,12 @@ CREATE TABLE IF NOT EXISTS `sessoes` (
   CONSTRAINT `FK_sessoes_salas` FOREIGN KEY (`sala_sessao`) REFERENCES `salas` (`codigo_salas`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela cineskills.sessoes: ~0 rows (aproximadamente)
+-- Dumping data for table cineskills.sessoes: ~0 rows (approximately)
 DELETE FROM `sessoes`;
+INSERT INTO `sessoes` (`id_sessao`, `sala_sessao`, `filme_sessao`, `data_sessao`, `hora_sessao`, `estado_sessao`) VALUES
+	(1, 1, 1, '2012-01-01', '23:22', 1);
 
--- A despejar estrutura para tabela cineskills.tiposdefilme
+-- Dumping structure for table cineskills.tiposdefilme
 DROP TABLE IF EXISTS `tiposdefilme`;
 CREATE TABLE IF NOT EXISTS `tiposdefilme` (
   `id_tipo_filme` int(11) NOT NULL,
@@ -121,8 +133,12 @@ CREATE TABLE IF NOT EXISTS `tiposdefilme` (
   PRIMARY KEY (`id_tipo_filme`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela cineskills.tiposdefilme: ~0 rows (aproximadamente)
+-- Dumping data for table cineskills.tiposdefilme: ~4 rows (approximately)
 DELETE FROM `tiposdefilme`;
+INSERT INTO `tiposdefilme` (`id_tipo_filme`, `descricao_tipo_filme`) VALUES
+	(1, 'Ação'),
+	(2, 'Aventura'),
+	(3, 'Romance');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
